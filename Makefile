@@ -15,10 +15,10 @@ tests: ## Runs the unit tests
 	go test -cover -v ./...
 
 docker-build: clean ## builds the docker image
-	docker build . -t $(BIN)
+	docker build . -t $(BIN) 
 
 docker-run: docker-build ## Start the application
-	docker-compose up --remove-orphans
+	docker-compose up --remove-orphans -d 
 
 docker-init: ## Initialize the Database, this should be run after docker-run
 	# Create the DB if it does not exist

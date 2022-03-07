@@ -1,0 +1,39 @@
+## Example Reporting Application
+
+The reporting application is expected to be run via Docker Compose. There is a makefile with the major commands.
+
+You can run `make` from the base directory to get a list of commands
+
+### Requirements
+- Docker
+- Make
+
+### Running
+
+Start the application with 
+
+`> make docker-run`
+
+You can seed the database via 
+
+`> make docker-init`
+
+### Known Issues
+There is some issues with the start up order. While there is a dependency on the DB for the application defined in docker compose,it is possible for the db to not be finished initilizing before the application attempts to connect to it.
+
+At times docker compose will complain about the volume for the reporting application with a: 
+```
+ERROR: The image for the service you're trying to recreate has been removed. If you continue, volume data could be lost. Consider backing up your data before continuing.
+```
+You can safely continue. 
+
+There are no unit tests yet, all testing is manual. :(
+
+
+### Next Steps
+
+Next things to add would be:
+1. Unit tests
+1. Reorganize the handler(s) into their own package
+1. Add support for querying the data vs retreving it all
+
