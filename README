@@ -18,6 +18,10 @@ You can seed the database via
 
 `> make docker-init`
 
+To stop the application
+
+`> make docker-stop`
+
 ### Known Issues
 There is some issues with the start up order. While there is a dependency on the DB for the application defined in docker compose,it is possible for the db to not be finished initilizing before the application attempts to connect to it.
 
@@ -33,7 +37,6 @@ There are no unit tests yet, all testing is manual. :(
 ### Next Steps
 
 Next things to add would be:
-1. Unit tests
-1. Reorganize the handler(s) into their own package
+1. Unit tests!
 1. Add support for querying the data vs retreving it all
 

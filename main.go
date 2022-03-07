@@ -1,45 +1,13 @@
 package main
 
 import (
-	"bytes"
-	"encoding/csv"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/c1freitas/reporting/db"
+	"github.com/c1freitas/reporting/handlers"
 )
-
-/*
- * reportHandler is the http endpoint. returns the CSV file or an error
- */
-func reportHandler(db *db.DBConnection) http.HandlerFunc {
-	return func(w http.ResponseWriter, req *http.Request) {
-		// ctx := req.Context()
-		log.Println("server: hello handler started")
-		defer log.Println("server: hello handler ended")
-		summary, err := db.Query()
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			fmt.Fprintf(w, "%v", err)
-		}
-
-		buf := &bytes.Buffer{}
-		wr := csv.NewWriter(buf)
-
-		for _, fi := range summary {
-			s := []string{fi.Id, fi.External_id, fi.External_mission_id, fi.Hardware_id, fi.Nickname, fi.Meta, fi.Created_at.String(), fi.Updated_at.String()}
-			wr.Write(s)
-		}
-
-		wr.Flush()
-
-		w.Header().Set("Content-Type", "text/csv")
-		w.Header().Set("Content-Disposition", "attachment;filename=TheCSVFileName.csv")
-		w.Write(buf.Bytes())
-	}
-}
 
 func main() {
 	port := os.Getenv("PORT")
@@ -71,7 +39,7 @@ func main() {
 	defer dbConnection.Close()
 
 	log.Println("Registering Handler(s)")
-	http.HandleFunc("/report", reportHandler(&dbConnection))
+	http.HandleFunc("/report", handlers.ReportHandler(&dbConnection))
 
 	log.Printf("Starting Server on port %v", port)
 	http.ListenAndServe(":"+port, nil)

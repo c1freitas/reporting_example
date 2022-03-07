@@ -26,6 +26,9 @@ docker-init: ## Initialize the Database, this should be run after docker-run
 	# Load the seed data
 	-docker exec -it reporting_db_1 sh -c "psql -h localhost -d reporting -U postgres -f  /var/data/db_init.sql"
 
+docker-stop: ## shuts down the application
+	docker-compose down
+
 clean: ## Remove build artifacts
 	$(RM) $(OUTPUT_DIR)/*
 	-docker image rm -f $(BIN)
