@@ -15,10 +15,10 @@ tests: ## Runs the unit tests
 	go test -cover -v ./...
 
 docker-build: clean ## builds the docker image
-	docker build . -t $(BIN) 
+	docker build . -t $(BIN):latest
 
 docker-run: docker-build ## Start the application
-	docker-compose up --remove-orphans -d 
+	docker-compose up --remove-orphans --no-recreate -d 
 
 docker-init: ## Initialize the Database, this should be run after docker-run
 	# Create the DB if it does not exist
@@ -31,7 +31,6 @@ docker-stop: ## shuts down the application
 
 clean: ## Remove build artifacts
 	$(RM) $(OUTPUT_DIR)/*
-	-docker image rm -f $(BIN)
 
 help: ## Display this help message
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_\/-]+:.*?## / {printf "\033[34m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | \
